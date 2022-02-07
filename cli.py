@@ -40,8 +40,18 @@ def execute(args):
     # otherwise, generate EOF error.
     # output redirection on dir, environ, echo, & help.
     try:
+        # NOTE: order of conditional statements is important
+
         if len(args) == 0:
             pass
+
+        # exit
+        elif args[0] == "exit":
+            exit()
+
+        # redirects or append
+        elif len(args) > 2 and (args[-2] == "->" or args[-2] == "-->"):
+            redirect(args[:-1], args[-1])
 
         # help
         elif args[0] == "help" or args[0] == "h":
@@ -50,14 +60,6 @@ def execute(args):
         # echo
         elif args[0] == "echo":
             echo(" ".join(args[1:]))
-
-        # exit
-        elif args[0] == "exit":
-            exit()
-
-        # # redirects or append
-        # elif len(args) > 2 and (args[-2] == "->" or args[-2] == "-->"):
-        #     redirect(args[:-1], args[-1])
 
         # # &
         # elif args[-1] == "&":
