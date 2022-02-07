@@ -38,7 +38,7 @@ def childprocess(args):
 def execute(args):
     # try execute the args.
     # otherwise, generate EOF error.
-    # output redirection on dir, environ, echo, & help.
+    # output redirection on echo and help.
     try:
         # NOTE: order of conditional statements is important
 
