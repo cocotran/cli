@@ -7,16 +7,13 @@ import subprocess
 from constructs import *
 
 
-def myshell(fileIn):
+def myshell(input_file):
     try:
-        with open(fileIn, "r") as file:
-            i = 1
-            for line in file:
-                print("\n\033[1mLine {} contains: \033[0m".format(i) + line)
-                execute(line.split())
-                i += 1
-    except:
-        print("File input error")
+        with open(input_file, "r") as f:
+            print(f.readlines())
+            # TODO: process input file to get user, host and PATH
+    except Exception as err:
+        print(err)
     raise SystemExit
 
 
@@ -75,15 +72,15 @@ def execute(args):
 def main(args):
     if len(args) > 1:
         myshell(args[1])
-    os.environ["SHELL"] = "\033[1m" + str(os.getcwd()) + "/myshell\033[0m"
+
+    user_host = pwd.getpwuid(os.getuid()).pw_name + "@" + socket.gethostname()
+
     clear()
     print(f"Type 'help' (or h) for available commands.\n")
     while True:
-        user_host = pwd.getpwuid(os.getuid()).pw_name + "@" + socket.gethostname()
         args = get_input(user_host)
         execute(args)
 
 
 if __name__ == "__main__":
-    # batchfile would represent sys.argv
     main(sys.argv)
