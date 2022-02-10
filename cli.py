@@ -60,6 +60,10 @@ def execute(args):
         elif args[0] == "echo":
             echo(" ".join(args[1:]))
 
+        # datetime
+        elif args[0] == "datetime":
+            print_date_time()
+
         # # &
         # elif args[-1] == "&":
         #     p = subprocess.Popen(args[:-1])
@@ -75,18 +79,19 @@ def main(args):
     user = ""
     host = ""
     path = ""
-    
+
     if len(args) > 1:
         settings: list = myshell(args[1])
         user = settings[0].strip()
         host = settings[1].strip()
         path = settings[2].strip()
-    else:    
+    else:
         try:
             import pwd
+
             user = pwd.getpwuid(os.getuid()).pw_name
         except:
-            user = os.getenv('username') if os.getenv('username') != "" else "user"
+            user = os.getenv("username") if os.getenv("username") != "" else "user"
         finally:
             host = socket.gethostname()
 
