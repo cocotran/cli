@@ -4,5 +4,5 @@ def echo(args):
         # if no args are given, warn the user.
         content += "The echo command was given no arguments."
     else:
-        content += args.rstrip()
+        content += args.rstrip().replace('"', "")
     print(content)
