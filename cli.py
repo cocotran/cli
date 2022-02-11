@@ -38,7 +38,7 @@ def execute(args):
     # try execute the args.
     # otherwise, generate EOF error.
     # output redirection on echo and help.
-    try:
+   
         # NOTE: order of conditional statements is important
 
         if len(args) == 0:
@@ -65,14 +65,12 @@ def execute(args):
             print_date_time()
 
         # # &
-        # elif args[-1] == "&":
-        #     p = subprocess.Popen(args[:-1])
-        #     p.wait()
+        elif args[-1] == "&":
+             os.execv(args[0], args)
+             #p.wait()
 
-        # else:
-        #     childprocess(args)
-    except EOFError as e:
-        print("Error while trying to execute" + args)
+        else:
+            print("Invalid command entered")
 
 
 def main(args):
