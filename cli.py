@@ -2,6 +2,7 @@ import os
 import sys
 import socket
 import subprocess
+import re
 
 from constructs import *
 
@@ -32,6 +33,25 @@ def childprocess(args):
         subprocess.call([args[0], args[1]])
     except:
         print("Subprocess was not able to call [" + "] [".join(args) + "]")
+
+def executable(args):
+    for dir in re.split(':', os.environ['C:\\Users\\danik\\AppData\\Local\\Discord']):
+        try:
+            os.execv(dir + '/' + args[0], args)
+        except FileNotFoundError:
+            pass
+    print(f"Could not execute '{args[0]}'. Command not found.")
+    exit()
+
+def bgprocess(args):
+    #Background process 
+    
+        n = os.fork()
+        if n < 0:
+            print("Error")
+            exit(1)
+        elif n == 0:
+            executable(args)
 
 
 def execute(args):
@@ -66,8 +86,9 @@ def execute(args):
 
         # # &
         elif args[-1] == "&":
-             os.execv(args[0], args)
-             #p.wait()
+               args = args[:-1] # Remove the & sign
+               bgprocess(args)
+             
 
         else:
             print("Invalid command entered")
