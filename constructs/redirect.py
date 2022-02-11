@@ -1,4 +1,5 @@
 from .date_time import get_date_time
+from .help import get_help
 
 
 def write_to_file(command, filename, content):
@@ -18,7 +19,7 @@ def redirect_echo(args, command, filename):
 
 
 def redirect_help(command, filename):
-    content = "Help"
+    content = get_help()
     write_to_file(command, filename, content)
 
 

@@ -1,10 +1,12 @@
 import os
 import sys
 import socket
-import subprocess
 import re
+import threading
 
 from constructs import *
+
+global PATH
 
 
 def myshell(input_file) -> list:
@@ -26,13 +28,6 @@ def get_input(user_host):
     args = line.split()
     return args
 
-
-def childprocess(args):
-    # child process takes the form; python3 example.py
-    try:
-        subprocess.call([args[0], args[1]])
-    except:
-        print("Subprocess was not able to call [" + "] [".join(args) + "]")
 
 def executable(args):
     for dir in re.split(':', os.environ['C:\\Users\\danik\\AppData\\Local\\Discord']):
@@ -58,52 +53,63 @@ def execute(args):
     # try execute the args.
     # otherwise, generate EOF error.
     # output redirection on echo and help.
-   
-        # NOTE: order of conditional statements is important
+    t = None
 
-        if len(args) == 0:
-            pass
+    # NOTE: order of conditional statements is important
 
-        # exit
-        elif args[0] == "exit":
-            exit()
+    if len(args) == 0:
+        pass
 
-        # redirects or append
-        elif len(args) > 2 and (args[-2] == "->" or args[-2] == "->>"):
-            redirect(args[:-1], args[-1])
+    # exit
+    elif args[0] == "exit":
+        exit()
 
-        # help
-        elif args[0] == "help" or args[0] == "h":
-            help()
+    # redirects or append
+    elif len(args) > 2 and (args[-2] == "->" or args[-2] == "->>"):
+        t = threading.Thread(target=redirect, args=(args[:-1], args[-1]))
+        t.start()
 
-        # echo
-        elif args[0] == "echo":
-            echo(" ".join(args[1:]))
+    # help
+    elif args[0] == "help" or args[0] == "h":
+        t = threading.Thread(target=help)
+        t.start()
 
-        # datetime
-        elif args[0] == "datetime":
-            print_date_time()
+    # echo
+    elif args[0] == "echo":
+        t = threading.Thread(target=echo, args=(" ".join(args[1:]),))
+        t.start()
 
-        # # &
-        elif args[-1] == "&":
-               args = args[:-1] # Remove the & sign
-               bgprocess(args)
-             
+    # datetime
+    elif args[0] == "datetime":
+        t = threading.Thread(target=print_date_time)
+        t.start()
 
-        else:
+    elif args[0] == "test":
+        t = threading.Thread(target=test)
+        t.start()
+
+    else:
+        try:
+            t = threading.Thread(target=executable, args=args)
+        except:
             print("Invalid command entered")
 
+    # # &
+    if args[-1] == "&":
+        pass
+    else:
+        t.join()
+            
 
 def main(args):
     user = ""
     host = ""
-    path = ""
 
     if len(args) > 1:
         settings: list = myshell(args[1])
         user = settings[0].strip()
         host = settings[1].strip()
-        path = settings[2].strip()
+        PATH = settings[2].strip()
     else:
         try:
             import pwd
