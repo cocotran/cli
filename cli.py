@@ -38,17 +38,6 @@ def executable(args):
     print(f"Could not execute '{args[0]}'. Command not found.")
     exit()
 
-def bgprocess(args):
-    #Background process 
-    
-        n = os.fork()
-        if n < 0:
-            print("Error")
-            exit(1)
-        elif n == 0:
-            executable(args)
-
-
 def execute(args):
     # try execute the args.
     # otherwise, generate EOF error.
