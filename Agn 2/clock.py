@@ -1,34 +1,31 @@
-class Timer:
+from time import sleep
 
-    def __init__(self, count=100,step=1,cycles=0,stop=False):
-        self.count = count
-        self.current_cnt=0
+
+class Clock:
+    def __init__(self, step=1, cycles=0, stop=False):
+        self.current_time = 0
         self.step = step
-        self.cpu_cycles=cycles
-        self.stop=False    #decrements count by step value
+        self.cpu_cycles = cycles
+        self.stop = True
 
-     #Set the timer to count value, passed by from the simulator
-    def setTimer(self, count):
-        self.count=count
+    def set_timer(self, count):
+        self.count = count
 
-    def get_CPUTime(self):
-        return self.current_cnt
-    
+    def get_current_time(self):
+        return self.current_time
+
     def get_CPUCycles(self):
         return self.cpu_cycles
 
-    #Starts decrementing the count value by step.
-    async def start_Timer(self):
-        cnt=self.count
-        if self.stop==True:
-            self.stop=False
-        while not self.stop :
-            if cnt == 0:
-                self.cpu_cycles=self.cpu_cycles+1
-                cnt=self.count
-            else:
-                cnt=cnt-self.step
-                self.current_cnt=cnt
+    def start_clock(self):
+        if self.stop:
+            self.stop = False
+        while not self.stop:
+            self.current_time += self.step
+            sleep(1)
 
-    def stop_Timer(self):
-        self.stop=True
+    def stop_clock(self):
+        self.stop = True
+
+    def fast_forward(self, time):
+        self.current_time += time
