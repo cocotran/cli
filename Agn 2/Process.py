@@ -8,12 +8,23 @@ class Process:
         self.burst_time: float = burst_time
         self.priority: int = priority
         self.time_slot: int = None
+        self.remaining_time: float = burst_time
+        self.first_run = True
 
-        self.remaining_time: float = None
-        self.completion_time: float = None
-
-    def __str__(self):
+    def __repr__(self):
         return f"Process ID:{self.PID}, Arrival: {self.arrival_time}, Burst: {self.burst_time}, Priority: {self.priority}"
+
+    @property
+    def response(self):
+        return None if self.first_run is None else self.first_run - self.arrival_time
+
+    @property
+    def turnaround(self):
+        return None if self.completion_time is None else self.completion_time - self.arrival_time
+
+    @property
+    def wait(self):
+        return None if self.turnaround is None else self.turnaround - self.burst_time
 
     # def is_empty(self):
     #     return len(self.queue) == 0

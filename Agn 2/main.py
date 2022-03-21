@@ -20,7 +20,7 @@ def main(args):
         ))
 
     scheduler = Scheduler(processes)
-    scheduler.run()
+    scheduler.start()
 
 if __name__ == "__main__":
     main(sys.argv)
