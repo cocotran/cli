@@ -58,19 +58,19 @@ class process():
         """
         return self.process_info.pid
 
-     def pid(self):
+     def arrival_time(self):
         """
         Returns the arrival time
         """
         return self.process_info.arrival_time
 
-     def pid(self):
+     def burst_time(self):
         """
         Returns the burst time
         """
         return self.process_info.burst_time
 
-     def pid(self):
+     def priority(self):
         """
         Returns the priority
         """
